@@ -24,6 +24,8 @@ class grid {
 		int get_cell(int);
 	public:
 		grid(std::string);
+		int weight(int);
+		int weight(int, int);
 		int get_height() {return height;};
 		int get_width() {return width;};
 		int get_start() {return start;};
@@ -89,6 +91,19 @@ void grid::set_cell(int index, int value){
 
 int grid::get_cell(int index){
 	return (grid_world[index/CELLS_PER_BYTE] >> 2*(index%CELLS_PER_BYTE)) & 0x3;
+}
+
+int grid::weight(int index){
+	switch(get_cell(index)){
+		case land: return 1;
+		case grass: return grass_cost;
+		case Wall: assert(0/* walls dont have weights*/);
+	}
+	assert(0);
+}
+
+int grid::weight(int index_h, int index_w){
+	return weight(index_w + index_h*width);
 }
 
 #endif
