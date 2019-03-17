@@ -58,35 +58,28 @@ grid::grid(std::string grid_name){
 			(width/CELLS_PER_BYTE + (width%CELLS_PER_BYTE!=0)));
 
 	//get walls
-	//{
+	{
 		std::ifstream walls_file(grid_name + ".wall", std::ios::in);
 		assert(walls_file.is_open());
-		std::string wall_index;
-		while (walls_file.good()){
+		std::string wall_index = ",";
+		while (wall_index.c_str()[0] == 10){
 			getline(walls_file, wall_index, ',');
-			std::cout << wall_index.length() << "@@" << std::endl;
-			std::cout << (int) wall_index.c_str()[0] << "##" << std::endl;
-			if (wall_index.c_str()[0] == 10){
-				goto end_loop;
-			}
-			std::cout << wall_index << "--" << std::endl;
 			set_cell(stoi(wall_index), wall);
 		}
-		end_loop:;
 		walls_file.close();
-	assert(0);
-	//}
+	}
 
-	/*
 	//get grass
 	{
-		std::ifstream grass_file(grid_name + ".wall", std::ios::in);
+		std::ifstream grass_file(grid_name + ".grass", std::ios::in);
 		assert(grass_file.is_open());
-		std::string grass_index;
-		while (getline(grass_file, grass_index, ','))
+		std::string grass_index = ",";
+		while (grass_index.c_str()[0] == 10){
+			getline(grass_file, grass_index, ',');
 			set_cell(stoi(grass_index), grass);
+		}
+		grass_file.close();
 	}
-	*/
 
 }
 
