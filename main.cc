@@ -11,5 +11,5 @@ double get_time(void) {
 }
 
 int main(int argc, char** argv){
-	grid map("easy.world");
+	grid map("easy");
 }
