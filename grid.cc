@@ -30,6 +30,7 @@ class grid {
 		int get_width() {return width;};
 		int get_start() {return start;};
 		int is_end(int index) {return (index == end);};
+		int is_wall(int index) {return (get_cell(index) == wall);};
 };
 
 grid::grid(std::string grid_name){
