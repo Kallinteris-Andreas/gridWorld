@@ -9,6 +9,7 @@
 #include <assert.h>
 #include <unistd.h>
 #include "grid.h"
+
 #define CELLS_PER_BYTE 4
 
 class grid {
@@ -30,8 +31,8 @@ class grid {
 		int get_width() {return width;};
 		int get_start() {return start;};
 		int is_end(int index) {return (index == end);};
-		int is_wall(int index) {return (get_cell(index) == wall);};
-};
+		int is_wall(int index) {return (get_cell(index) == wall);};//!! has a bug,something is falsely written from parsing
+};															//!! the problem may be a parsing error or a CellsPerByte implementation mistake(very important) 
 
 grid::grid(std::string grid_name){
 	std::ifstream world_file(grid_name + ".world", std::ios::in);
@@ -86,6 +87,7 @@ grid::grid(std::string grid_name){
 
 }
 
+
 void grid::set_cell(int index, int value){
 	grid_world[index/CELLS_PER_BYTE] |= value << 2*(index%CELLS_PER_BYTE);
 }
@@ -94,11 +96,11 @@ int grid::get_cell(int index){
 	return (grid_world[index/CELLS_PER_BYTE] >> 2*(index%CELLS_PER_BYTE)) & 0x3;
 }
 
-int grid::weight(int index){
+int grid::weight(int index){// !!!a bug appeared when reading a specific index, something may be falsely written(to be seen)
 	switch(get_cell(index)){
 		case land: return 1;
 		case grass: return grass_cost;
-		case Wall: assert(0/* walls dont have weights*/);
+		case wall: assert(0/* walls dont have weights*/);
 	}
 	assert(0);
 }

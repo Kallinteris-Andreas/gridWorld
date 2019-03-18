@@ -3,6 +3,8 @@
 #include <stdlib.h>
 #include <sys/time.h>
 #include "grid.cc"
+#include "navigator.cc"
+using namespace std;
 
 double get_time(void) {
     struct timeval ttime;
@@ -12,4 +14,9 @@ double get_time(void) {
 
 int main(int argc, char** argv){
 	grid map("easy");
+	
+	navigator nav(&map);
+	cout << nav.DFS();
+
+	return 1;
 }

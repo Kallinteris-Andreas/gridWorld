@@ -1,12 +1,11 @@
 CC = clang++
-
 BASICFLAGS= 
 
 FLAGS= -Wall $(BASICFLAGS)
 
 OPTFLAG= 
 
-program: grid.o main.o
+program: grid.o main.o navigator.o
 	$(CC) $(FLAGS) main.o -o program
 
 main.o: main.cc main.h
@@ -14,6 +13,9 @@ main.o: main.cc main.h
 
 grid.o: grid.cc grid.h
 	$(CC) -c grid.cc
+
+navigator.o: navigator.cc navigator.h
+	$(CC) -c navigator.cc
 
 clean:
 	rm *.o program
