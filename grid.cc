@@ -99,6 +99,7 @@ void grid::set_cell(int index, int value){
 }
 
 int grid::get_cell(int index){
+	assert(index < width*height && "You are Out of bounds");
 	return (grid_world[index/CELLS_PER_BYTE] >> 2*(index%CELLS_PER_BYTE)) & 0x3;
 }
 
