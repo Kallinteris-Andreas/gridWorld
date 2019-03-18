@@ -1,7 +1,7 @@
 # 0.1
-* implement grid (not tested)
-* create MakeFile (has bugges needs make cl)
-* add gitingore
+* implement grid [Done]
+* create MakeFile [Done]
+* add gitingore [Done]
 
 # 0.2
 * implement BFS

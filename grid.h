@@ -4,7 +4,7 @@
 
 enum cell{
 	land = 0x0,
-	grass = 0x1,
-	wall = 0x2,
+	grass = 0x3,
+	wall = 0x1,
 };
 #endif

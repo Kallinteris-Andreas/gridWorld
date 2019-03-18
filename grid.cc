@@ -8,6 +8,7 @@
 #include <thread>
 #include <assert.h>
 #include <unistd.h>
+#include <stdio.h>
 #include "grid.h"
 
 #define CELLS_PER_BYTE 4
@@ -25,17 +26,18 @@ class grid {
 		int get_cell(int);
 	public:
 		grid(std::string);
+		void print();
 		int weight(int);
 		int weight(int, int);
 		int get_height() {return height;};
 		int get_width() {return width;};
 		int get_start() {return start;};
 		int is_end(int index) {return (index == end);};
-		int is_wall(int index) {return (get_cell(index) == wall);};//!! has a bug,something is falsely written from parsing
-};															//!! the problem may be a parsing error or a CellsPerByte implementation mistake(very important) 
+		int is_wall(int index) {return (get_cell(index) == wall);};
+};
 
 grid::grid(std::string grid_name){
-	std::ifstream world_file(grid_name + ".world", std::ios::in);
+	std::ifstream world_file("worlds/" + grid_name + ".world", std::ios::in);
 	assert(world_file.is_open());
 	std::string line;
 
@@ -58,29 +60,33 @@ grid::grid(std::string grid_name){
 
 	world_file.close();
 	//malloc world
-	grid_world = (char*) calloc(1, (height/CELLS_PER_BYTE + (height%CELLS_PER_BYTE!=0))*
+	grid_world = (char*) calloc(sizeof(char),(height)*
 			(width/CELLS_PER_BYTE + (width%CELLS_PER_BYTE!=0)));
 
 	//get walls
 	{
-		std::ifstream walls_file(grid_name + ".wall", std::ios::in);
+		std::ifstream walls_file("worlds/" + grid_name + ".wall", std::ios::in);
 		assert(walls_file.is_open());
-		std::string wall_index = ",";
-		while (wall_index.c_str()[0] == 10){
-			getline(walls_file, wall_index, ',');
+		std::string wall_index;
+		getline(walls_file, wall_index, ',');
+		int No_walls = stoi(wall_index);
+		getline(walls_file, wall_index, ',');
+		for (int i = 0; i != No_walls; i++){
 			set_cell(stoi(wall_index), wall);
+			getline(walls_file, wall_index, ',');
 		}
 		walls_file.close();
 	}
 
 	//get grass
 	{
-		std::ifstream grass_file(grid_name + ".grass", std::ios::in);
+		std::ifstream grass_file("worlds/" + grid_name + ".grass", std::ios::in);
 		assert(grass_file.is_open());
 		std::string grass_index = ",";
-		while (grass_index.c_str()[0] == 10){
-			getline(grass_file, grass_index, ',');
+		getline(grass_file, grass_index, ',');
+		while (grass_index.c_str()[0] != 10){
 			set_cell(stoi(grass_index), grass);
+			getline(grass_file, grass_index, ',');
 		}
 		grass_file.close();
 	}
@@ -96,17 +102,39 @@ int grid::get_cell(int index){
 	return (grid_world[index/CELLS_PER_BYTE] >> 2*(index%CELLS_PER_BYTE)) & 0x3;
 }
 
-int grid::weight(int index){// !!!a bug appeared when reading a specific index, something may be falsely written(to be seen)
+int grid::weight(int index){
 	switch(get_cell(index)){
 		case land: return 1;
 		case grass: return grass_cost;
 		case wall: assert(0/* walls dont have weights*/);
+		default: assert(0 && "not valid cell type");
 	}
-	assert(0);
 }
 
 int grid::weight(int index_h, int index_w){
 	return weight(index_w + index_h*width);
+}
+
+void grid::print(){
+	int i = 0;
+	std::cout << "Height:" << height << std::endl;
+	std::cout << "Width" << width << std::endl;
+	for (int i = 0; i!= height; i++){
+		for (int j = 0; j!= width; j++){
+			std::cout << get_cell(i*width + j);
+			switch(get_cell(i*width + j)){
+				case land:	std::cout << 'L' << ' ';
+					break;
+				case grass:	std::cout << 'G' << ' ';
+					break;
+				case wall:	std::cout << 'W' << ' ';
+					break;
+				default: assert(0);
+			}
+		}
+		std::cout << std::endl;
+	}
+		
 }
 
 #endif
