@@ -1,6 +1,5 @@
 
 #include "grid.h"
-
 grid::grid(std::string grid_name){
 	std::ifstream world_file("worlds/" + grid_name + ".world", std::ios::in);
 	assert(world_file.is_open());

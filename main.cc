@@ -13,11 +13,22 @@ double get_time(void) {
 }
 
 int main(int argc, char** argv){
-	grid map("easy");
-	cout << "testq"<<endl;
-	navigator nav(&map);
-	cout << "test2"<<endl;
-	cout << nav.DFS();
+	// Testing functions \/
+	grid* map = new grid("easy");
+	cout<<rand()%4 +1<<endl;
+
+	map->print();
+
+	navigator* nav = new navigator(map);
+	//solving with DFS 
+	cout << nav->DFS()<<endl;
+	//printing path
+	vector<int> v = nav->get_path();
+    for (std::vector<int>::const_iterator i = v.begin(); i != v.end(); ++i){
+    	cout << " -> "<< *i ;
+    }
+    cout <<endl;
+   	
 
 	return 1;
 }

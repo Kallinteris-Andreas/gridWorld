@@ -6,6 +6,7 @@
 //#include "grid.cc"
 #include <stdlib.h>
 #include <vector>
+#include <cstdlib>
 
 using namespace std;
 
@@ -18,10 +19,12 @@ class navigator{
 		int totalSum;
 	    grid* map ;//= (grid)NULL;
 		vector<vector<int>> discovered;
+		vector<int> path;
 		bool found ;
 		int DFS(int x,int y);
 	public:
 		navigator(grid* map);
+		vector<int> get_path(){return path;};//Returns the path to the destination
 		int DFS();
 		int BFS();//to be implemented
 		int A_star();//to be implemented
