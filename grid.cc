@@ -1,40 +1,4 @@
-#ifndef grid_def
-#define grid_def
-#include <iostream>
-#include <string>
-#include <fstream>
-#include <ostream>
-#include <chrono>
-#include <thread>
-#include <assert.h>
-#include <unistd.h>
-#include <stdio.h>
 #include "grid.h"
-
-#define CELLS_PER_BYTE 4
-
-class grid {
-	private:
-		int height;
-		int width;
-		int start;
-		int end;
-		int grass_cost;
-		char* grid_world;
-	private:
-		void set_cell(int, int);
-		int get_cell(int);
-	public:
-		grid(std::string);
-		void print();
-		int weight(int);
-		int weight(int, int);
-		int get_height() {return height;};
-		int get_width() {return width;};
-		int get_start() {return start;};
-		int is_end(int index) {return (index == end);};
-		int is_wall(int index) {return (get_cell(index) == wall);};
-};
 
 grid::grid(std::string grid_name){
 	std::ifstream world_file("worlds/" + grid_name + ".world", std::ios::in);
@@ -99,7 +63,7 @@ void grid::set_cell(int index, int value){
 }
 
 int grid::get_cell(int index){
-	assert(index < width*height && "You are Out of bounds");
+	assert(index < width*height || index < 0 && "You are Out of bounds");
 	return (grid_world[index/CELLS_PER_BYTE] >> 2*(index%CELLS_PER_BYTE)) & 0x3;
 }
 
@@ -137,5 +101,3 @@ void grid::print(){
 	}
 		
 }
-
-#endif

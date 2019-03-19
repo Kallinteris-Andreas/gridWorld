@@ -2,7 +2,6 @@
 #define navigator_def
 #include <iostream>
 #include <string>
-#include "grid.cc"
 #include "grid.h"
 #include <stdlib.h>
 #include <vector>
@@ -87,7 +86,8 @@ int navigator::DFS(int x,int y){
 			totalSum += DFS(x+1,y);
 		}
 	}
-	return 1;
+	//return 1;
+	std::cout << index << std::endl;
 	return map->weight(index);
 
 }

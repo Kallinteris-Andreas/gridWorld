@@ -1,4 +1,4 @@
-CC = clang++
+CC = g++
 BASICFLAGS= 
 
 FLAGS= -Wall $(BASICFLAGS)
@@ -6,7 +6,7 @@ FLAGS= -Wall $(BASICFLAGS)
 OPTFLAG= 
 
 program: grid.o main.o navigator.o
-	$(CC) $(FLAGS) main.o -o program
+	$(CC) $(FLAGS) grid.o main.o -o program
 
 main.o: main.cc main.h
 	$(CC) -c main.cc

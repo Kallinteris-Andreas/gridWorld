@@ -2,7 +2,7 @@
 #include <string>
 #include <stdlib.h>
 #include <sys/time.h>
-#include "grid.cc"
+#include "grid.h"
 #include "navigator.cc"
 using namespace std;
 
