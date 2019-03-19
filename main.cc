@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <sys/time.h>
 #include "grid.h"
-#include "navigator.cc"
+#include "navigator.h"
 using namespace std;
 
 double get_time(void) {
@@ -14,8 +14,9 @@ double get_time(void) {
 
 int main(int argc, char** argv){
 	grid map("easy");
-	
+	cout << "testq"<<endl;
 	navigator nav(&map);
+	cout << "test2"<<endl;
 	cout << nav.DFS();
 
 	return 1;

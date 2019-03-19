@@ -1,33 +1,8 @@
-#ifndef navigator_def
-#define navigator_def
-#include <iostream>
-#include <string>
-#include "grid.h"
-#include <stdlib.h>
-#include <vector>
+
 #include "navigator.h"
+
+
 using namespace std;
-
-class navigator{
-	private:
-		int height;
-		int width;
-		int startingx;//Current point X
-		int startingy;//Current point Y
-		int totalSum;
-	    grid* map ;//= (grid)NULL;
-		vector<vector<int>> discovered;
-		bool found ;
-		int DFS(int x,int y);
-	public:
-		navigator(grid* map);
-		int DFS();
-		int BFS();//to be implemented
-		int A_star();//to be implemented
-		int LRTA_star();//to be implemented
-		
-
-};
 //Constructor
 navigator::navigator(grid* map){
 	map = map;
@@ -92,4 +67,4 @@ int navigator::DFS(int x,int y){
 
 }
 
-#endif
+
