@@ -6,8 +6,6 @@ using namespace std;
 //Constructor
 navigator::navigator(grid* map){
 	map = map;
-	startingx = map->get_start() % width;
-	startingy = map->get_start() / width;
 	totalSum = 0;
 	found = false;
 	

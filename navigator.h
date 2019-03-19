@@ -9,12 +9,12 @@
 #define height map->get_height()
 #define width map->get_width()
 
+#define startingx map->get_start() % width
+#define startingy map->get_start() / width
 using namespace std;
 
 class navigator{
 	private:
-		int startingx;//Current point X
-		int startingy;//Current point Y
 		int totalSum;
 		grid* map;//= (grid)NULL;
 		vector<vector<int>> discovered;
