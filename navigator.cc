@@ -63,4 +63,10 @@ int navigator::DFS(int x,int y){
 
 }
 
+bool navigator::is_edge(int index){
+	return is_edge(index % width, index / height);
+}
 
+bool navigator::is_edge(int x, int y){
+	return (x == 0 || x == width-1 || y == 0 || y == width-1);
+}

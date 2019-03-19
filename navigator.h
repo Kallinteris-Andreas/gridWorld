@@ -20,13 +20,13 @@ class navigator{
 		vector<vector<int>> discovered;
 		bool found;
 		int DFS(int x,int y);
+		bool is_edge(int);
+		bool is_edge(int, int);
 	public:
 		navigator(grid* map);
 		int DFS();
 		int BFS();//to be implemented
 		int A_star();//to be implemented
 		int LRTA_star();//to be implemented
-		
-
 };
 #endif
