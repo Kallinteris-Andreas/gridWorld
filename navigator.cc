@@ -6,8 +6,6 @@ using namespace std;
 //Constructor
 navigator::navigator(grid* map){
 	map = map;
-	height = map->get_height();
-	width = map->get_width();
 	startingx = map->get_start() % width;
 	startingy = map->get_start() / width;
 	totalSum = 0;

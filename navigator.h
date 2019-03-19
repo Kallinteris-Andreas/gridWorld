@@ -3,22 +3,22 @@
 #include <iostream>
 #include <string>
 #include "grid.h"
-//#include "grid.cc"
 #include <stdlib.h>
 #include <vector>
+
+#define height map->get_height()
+#define width map->get_width()
 
 using namespace std;
 
 class navigator{
 	private:
-		int height;
-		int width;
 		int startingx;//Current point X
 		int startingy;//Current point Y
 		int totalSum;
-	    grid* map ;//= (grid)NULL;
+		grid* map;//= (grid)NULL;
 		vector<vector<int>> discovered;
-		bool found ;
+		bool found;
 		int DFS(int x,int y);
 	public:
 		navigator(grid* map);
