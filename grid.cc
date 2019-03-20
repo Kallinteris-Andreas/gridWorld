@@ -1,5 +1,5 @@
-
 #include "grid.h"
+
 grid::grid(std::string grid_name){
 	std::ifstream world_file("worlds/" + grid_name + ".world", std::ios::in);
 	assert(world_file.is_open());
@@ -55,6 +55,12 @@ grid::grid(std::string grid_name){
 		grass_file.close();
 	}
 
+//generate random grid
+grid::grid(int h, int w){
+	height = h;
+	weight = w;
+	grid_world = (char*) calloc(sizeof(char),(height)*
+			(width/CELLS_PER_BYTE + (width%CELLS_PER_BYTE!=0)));
 }
 
 
@@ -81,7 +87,6 @@ int grid::weight(int index_h, int index_w){
 }
 
 void grid::print(){
-	int i = 0;
 	std::cout << "Height:" << height << std::endl;
 	std::cout << "Width" << width << std::endl;
 	for (int i = 0; i!= height; i++){
@@ -91,8 +96,9 @@ void grid::print(){
 		}
 		std::cout << std::endl;
 	}
-		
 }
+
+void grid::set_grass_cost(int new_cost){grass_cost = new_cost;}
 
 char symbol(cell c){
 	switch(c){

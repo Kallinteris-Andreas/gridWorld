@@ -31,7 +31,9 @@ class grid {
 		int get_cell(int);
 	public:
 		grid(std::string);
+		grid(int,int);
 		void print();
+		void set_grass_cost(int);
 		int weight(int);
 		int weight(int, int);
 		int get_height() {return height;};
