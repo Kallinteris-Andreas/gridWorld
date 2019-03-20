@@ -29,4 +29,12 @@ class navigator{
 		int A_star();//to be implemented
 		int LRTA_star();//to be implemented
 };
+
+enum direction{
+	left,
+	right,
+	above,
+	below,
+};
+
 #endif
