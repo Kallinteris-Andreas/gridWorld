@@ -5,6 +5,7 @@
 #include "grid.h"
 #include <stdlib.h>
 #include <vector>
+#include <cstdlib>
 
 #define height map->get_height()
 #define width map->get_width()
@@ -18,12 +19,15 @@ class navigator{
 		int totalSum;
 		grid* map;//= (grid)NULL;
 		vector<vector<int>> discovered;
-		bool found;
+		vector<int> path;
+		bool found ;
+
 		int DFS(int x,int y);
 		bool is_edge(int);
 		bool is_edge(int, int);
 	public:
 		navigator(grid* map);
+		vector<int> get_path(){return path;};//Returns the path to the destination
 		int DFS();
 		int BFS();//to be implemented
 		int A_star();//to be implemented
