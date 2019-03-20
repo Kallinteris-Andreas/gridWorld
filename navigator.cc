@@ -7,10 +7,6 @@ using namespace std;
 
 navigator::navigator(grid *mapp){
 	map = mapp;
-	//height = mapp->get_height();
-	//width = map->get_width();
-	//startingx = map->get_start() % width;
-//	startingy = map->get_start() / width;
 	totalSum = 0;
 	found = false;
 	path.clear();
