@@ -3,25 +3,28 @@
 #include <iostream>
 #include <string>
 #include "grid.h"
-//#include "grid.cc"
 #include <stdlib.h>
 #include <vector>
 #include <cstdlib>
 
+#define height map->get_height()
+#define width map->get_width()
+
+#define startingx map->get_start() % width
+#define startingy map->get_start() / width
 using namespace std;
 
 class navigator{
 	private:
-		int height;
-		int width;
-		int startingx;//Current point X
-		int startingy;//Current point Y
 		int totalSum;
-	    grid* map ;//= (grid)NULL;
+		grid* map;//= (grid)NULL;
 		vector<vector<int>> discovered;
 		vector<int> path;
 		bool found ;
+
 		int DFS(int x,int y);
+		bool is_edge(int);
+		bool is_edge(int, int);
 	public:
 		navigator(grid* map);
 		vector<int> get_path(){return path;};//Returns the path to the destination
@@ -29,7 +32,5 @@ class navigator{
 		int BFS();//to be implemented
 		int A_star();//to be implemented
 		int LRTA_star();//to be implemented
-		
-
 };
 #endif

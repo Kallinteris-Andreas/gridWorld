@@ -40,4 +40,7 @@ class grid {
 		int is_end(int index) {return (index == end);};
 		int is_wall(int index) {return (get_cell(index) == wall);};
 };
+
+char symbol(cell);
+
 #endif

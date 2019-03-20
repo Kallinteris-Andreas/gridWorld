@@ -4,12 +4,13 @@
 
 using namespace std;
 //Constructor
+
 navigator::navigator(grid *mapp){
 	map = mapp;
-	height = map->get_height();
-	width = map->get_width();
-	startingx = map->get_start() % width;
-	startingy = map->get_start() / width;
+	//height = mapp->get_height();
+	//width = map->get_width();
+	//startingx = map->get_start() % width;
+//	startingy = map->get_start() / width;
 	totalSum = 0;
 	found = false;
 	path.clear();
@@ -104,4 +105,10 @@ int navigator::DFS(int x,int y){
 
 }
 
+bool navigator::is_edge(int index){
+	return is_edge(index % width, index / height);
+}
 
+bool navigator::is_edge(int x, int y){
+	return (x == 0 || x == width-1 || y == 0 || y == width-1);
+}

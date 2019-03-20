@@ -87,17 +87,18 @@ void grid::print(){
 	for (int i = 0; i!= height; i++){
 		for (int j = 0; j!= width; j++){
 			std::cout << get_cell(i*width + j);
-			switch(get_cell(i*width + j)){
-				case land:	std::cout << 'L' << ' ';
-					break;
-				case grass:	std::cout << 'G' << ' ';
-					break;
-				case wall:	std::cout << 'W' << ' ';
-					break;
-				default: assert(0);
-			}
+			std::cout << symbol((cell) get_cell(i*width + j));
 		}
 		std::cout << std::endl;
 	}
 		
+}
+
+char symbol(cell c){
+	switch(c){
+		case land:	return 'L';
+		case grass:	return 'G';
+		case wall:	return 'W';
+		default: assert(0 && "Not Valid Cell");
+	}
 }
