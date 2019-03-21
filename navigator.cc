@@ -9,10 +9,7 @@ navigator::navigator(grid *mapp){
 	path.clear();
 
 	//Initializing the 2d adrray
-	discovered.resize(height);
-	for(int i= 0 ;i < height ; i++ ){
-	 	discovered[i].resize(width);
-	}
+	discovered =(int*)calloc(height*width,sizeof(int));
 
 }
 
@@ -20,19 +17,19 @@ int navigator::DFS(){
 	path.clear();
 	totalSum = 0;
 	found = false;
-	discovered.resize(height);
-	for(int i= 0 ;i < height ; i++ ){
-		discovered[i].clear();
-	 	discovered[i].resize(width);
+	if(discovered!= NULL){
+	 	delete discovered;	
 	}
+	discovered = (int*)calloc(height*width,sizeof(int));
 
 	totalSum += DFS(startingx,startingy);
 	return totalSum;
 }
 
 int navigator::DFS(int x,int y){
-	discovered[y][x]= 1;
+	
 	int index = y*width+x;
+	discovered[index]= 1;
 	path.push_back(index);
 	
 	//cout << y <<" "<<x<<" "<<index<<" "<< map->is_wall(index)<<"\n";
@@ -43,24 +40,15 @@ int navigator::DFS(int x,int y){
 		return 0;
 	}
 	int pick = 1;
-	int flag[4] = {0,0,0,0};
-	srand (time(NULL));
 	
 	for(int i =1; i<5;i++){
-		//Visiting all four directions(up,down,..) randomly
-		while(found == false){
-			pick = rand()%4 +1;
-			if (flag[pick]!=1){
-				flag[pick] = 1;
-				break;
-			}
 
-		}
+		pick = i;
 		switch(pick){
 			case 1:
 				//going up
-				if(y-1 >= 0 && !found){//IF found is TRUE there is no need to further expand,so terminate
-					if((!map->is_wall((y-1)*width+x )&& discovered[y-1][x]==0)){
+				if(y-1 >= 0 && !found){//IF found is TRUE,there is no need to further expand,so terminate
+					if((!map->is_wall((y-1)*width+x )&& discovered[(y-1)*width+x]==0)){
 						totalSum += DFS(x,y-1);
 					}
 				}
@@ -68,7 +56,7 @@ int navigator::DFS(int x,int y){
 			case 2:
 				//going down
 				if(y+1 <height && !found){
-					if((!map->is_wall((y+1)*width+x )&& discovered[y+1][x]==0)){
+					if((!map->is_wall((y+1)*width+x )&& discovered[(y+1)*width+x]==0)){
 						totalSum += DFS(x,y+1);
 					}	
 				}
@@ -76,7 +64,7 @@ int navigator::DFS(int x,int y){
 			case 3:
 				//going left
 				if(x-1 >= 0 && !found){
-					if((!map->is_wall(y*width+x-1 )&& discovered[y][x-1]==0)){
+					if((!map->is_wall(y*width+x-1 )&& discovered[y*width+x-1]==0)){
 						totalSum += DFS(x-1,y);
 					}
 				}
@@ -84,7 +72,7 @@ int navigator::DFS(int x,int y){
 			case 4:
 				//going right
 				if(x+1 <width && !found){
-					if((!map->is_wall(y*width+x+1 )&& discovered[y][x+1]==0)){
+					if((!map->is_wall(y*width+x+1 )&& discovered[y*width+x+1]==0)){
 						totalSum += DFS(x+1,y);
 					}
 				}

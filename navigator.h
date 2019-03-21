@@ -19,8 +19,9 @@ using namespace std;
 class navigator{
 	private:
 		int totalSum;
-		grid* map;//= (grid)NULL;
-		vector<vector<int>> discovered;
+		grid* map;
+		//vector<vector<int>> discovered;
+		int* discovered;
 		vector<int> path;
 		bool found ;
 
@@ -31,7 +32,7 @@ class navigator{
 		navigator(grid* map);
 		vector<int> get_path(){return path;};//Returns the path to the destination
 		int DFS();
-		int BFS();//to be implemented
+		int BFS();
 		int A_star();//to be implemented
 		int LRTA_star();//to be implemented
 };

@@ -15,10 +15,12 @@ double get_time(void) {
 int main(int argc, char** argv){
 	// Testing functions \/
 	grid* map = new grid("easy");
-	cout<<rand()%4 +1<<endl;
 
 	navigator* nav = new navigator(map);
-	nav->BFS();
+	cout << nav->DFS()<<endl;
+	cout << nav->BFS()<<endl;
+	cout << nav->DFS()<<endl;
+	
 	/*
 	//solving with DFS 
 	cout << nav->DFS()<<endl;
