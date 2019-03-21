@@ -35,6 +35,8 @@ class grid {
 		void print();
 		void set_grass_cost(int);
 		int weight(int);
+		int start_x();
+		int start_y();
 		int weight(int, int);
 		int get_height() {return height;};
 		int get_width() {return width;};

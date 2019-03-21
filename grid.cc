@@ -54,14 +54,17 @@ grid::grid(std::string grid_name){
 		}
 		grass_file.close();
 	}
+}
 
+/*
 //generate random grid
-grid::grid(int h, int w){
-	height = h;
-	weight = w;
+grid::grid(int h0, int w0){
+	height = h0;
+	weight = w0;
 	grid_world = (char*) calloc(sizeof(char),(height)*
 			(width/CELLS_PER_BYTE + (width%CELLS_PER_BYTE!=0)));
 }
+*/
 
 
 void grid::set_cell(int index, int value){
@@ -97,6 +100,9 @@ void grid::print(){
 		std::cout << std::endl;
 	}
 }
+
+int grid::start_x(){return start%width;}
+int grid::start_y(){return start/width;}
 
 void grid::set_grass_cost(int new_cost){grass_cost = new_cost;}
 
