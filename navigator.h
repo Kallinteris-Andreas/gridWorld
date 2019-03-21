@@ -5,7 +5,9 @@
 #include "grid.h"
 #include <stdlib.h>
 #include <vector>
+#include <queue>
 #include <cstdlib>
+#include <boost/circular_buffer.hpp>
 
 #define height map->get_height()
 #define width map->get_width()

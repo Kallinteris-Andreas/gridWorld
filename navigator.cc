@@ -1,9 +1,6 @@
-
 #include "navigator.h"
 
-
 using namespace std;
-//Constructor
 
 navigator::navigator(grid *mapp){
 	map = mapp;
@@ -17,7 +14,8 @@ navigator::navigator(grid *mapp){
 	 	discovered[i].resize(width);
 	}
 
-}//Initial DFS function
+}
+
 int navigator::DFS(){
 	path.clear();
 	totalSum = 0;
@@ -31,8 +29,8 @@ int navigator::DFS(){
 	totalSum += DFS(startingx,startingy);
 	return totalSum;
 }
-int navigator::DFS(int x,int y){
 
+int navigator::DFS(int x,int y){
 	discovered[y][x]= 1;
 	int index = y*width+x;
 	path.push_back(index);
@@ -98,10 +96,45 @@ int navigator::DFS(int x,int y){
 	}
 	//returning the cost of the current cell
 	return map->weight(index);
-
 }
 
 int navigator::BFS(){
+	//init an array with no dynamic resizing
+	const int capacity = 2*std::min(std::max(startingx, width-startingx),
+				std::max(startingy, height - startingy));
+	std::queue<int, boost::circular_buffer<int>> mq{boost::circular_buffer<int>(capacity)};
+	bool *visited = new bool[height*width];
+	visited[map->get_start()] = true;
+	mq.push(map->get_start());
+
+	while (!mq.empty()){
+		int cur = mq.front();
+		mq.pop();
+		std::cout << cur << "->";
+		if (map->is_end(cur))
+			return 1;
+		//left
+		if (cur%width-1 >= 0 && visited[cur-1] == false){
+			mq.push(cur-1);
+			visited[cur-1] = true;
+		}
+		//right
+		if (cur%width+1 <= width && visited[cur+1] == false){
+			mq.push(cur+1);
+			visited[cur+1] = true;
+		}
+		//up
+		if (cur/width-1 >= 0 && visited[cur-height] == false){
+			mq.push(cur-height);
+			visited[cur-height] = true;
+		}
+		//down
+		if (cur/width+1 <= height && visited[cur+height] == false){
+			mq.push(cur+height);
+			visited[cur+height] = true;
+		}
+	}
+	return 0;
 }
 
 bool navigator::is_edge(int index){
