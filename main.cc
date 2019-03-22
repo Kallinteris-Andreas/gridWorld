@@ -15,12 +15,16 @@ double get_time(void) {
 int main(int argc, char** argv){
 	// Testing functions \/
 	grid* map = new grid("easy");
-
+	map->print();
 	navigator* nav = new navigator(map);
-	cout << nav->DFS()<<endl;
-	cout << nav->BFS()<<endl;
-	cout << nav->DFS()<<endl;
-	
+	cout << nav->A_star()<<endl;
+	//cout << nav->BFS()<<endl;
+	//cout << nav->DFS()<<endl;
+	vector<int> v = nav->get_path();
+	std::cout << "path steps: " << v.size() << std::endl;
+    for (std::vector<int>::const_iterator i = v.begin(); i != v.end(); ++i){
+    	cout << " -> "<< *i ;
+    }
 	/*
 	//solving with DFS 
 	cout << nav->DFS()<<endl;

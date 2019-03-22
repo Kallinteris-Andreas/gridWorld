@@ -7,35 +7,47 @@
 #include <vector>
 #include <queue>
 #include <cstdlib>
+#include <math.h>
 #include <boost/circular_buffer.hpp>
+#include <boost/heap/priority_queue.hpp>
 
 #define height map->get_height()
 #define width map->get_width()
 
 #define startingx map->get_start() % width
 #define startingy map->get_start() / width
-using namespace std;
+#define max_int 214748364
 
+using namespace std;
+struct cell_key{
+	int index;
+	float weight;
+};
 class navigator{
 	private:
 		int totalSum;
 		grid* map;
-		//vector<vector<int>> discovered;
 		int* discovered;
 		vector<int> path;
+		
 		bool found ;
 
 		int DFS(int x,int y);
+
 		bool is_edge(int);
 		bool is_edge(int, int);
+		void push_back(vector<cell_key*> &v,int index);//Push cell with index to the given vector
+		float distance(int); // Returns the distance from the end to the index
 	public:
 		navigator(grid* map);
 		vector<int> get_path(){return path;};//Returns the path to the destination
 		int DFS();
 		int BFS();
-		int A_star();//to be implemented
+		int A_star();
 		int LRTA_star();//to be implemented
 };
+
+
 
 enum direction{
 	left,

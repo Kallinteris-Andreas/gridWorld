@@ -41,6 +41,7 @@ class grid {
 		int get_height() {return height;};
 		int get_width() {return width;};
 		int get_start() {return start;};
+		int get_end(){return end;};
 		int is_end(int index) {return (index == end);};
 		int is_wall(int index) {return (get_cell(index) == wall);};
 };

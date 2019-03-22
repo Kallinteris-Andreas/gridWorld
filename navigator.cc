@@ -2,6 +2,7 @@
 
 using namespace std;
 
+
 navigator::navigator(grid *mapp){
 	map = mapp;
 	totalSum = 0;
@@ -10,9 +11,83 @@ navigator::navigator(grid *mapp){
 
 	//Initializing the 2d adrray
 	discovered =(int*)calloc(height*width,sizeof(int));
-
 }
 
+void navigator::push_back(vector<cell_key*> &v,int index){
+	float dist = distance(index);
+	cell_key* c = new cell_key();
+	c->index = index;
+	c->weight = dist + map->weight(index);
+
+	v.push_back(c);
+}
+float navigator::distance(int index){ //THIS is the heuristic function,we may change it
+	int xx = map->get_end()%width - index%width;
+	int yy = map->get_end()/width - index/width;
+	cout<<"weight : "<< sqrt(xx*xx+yy*yy) <<endl;
+	return sqrt(xx*xx+yy*yy);
+}
+int navigator::A_star(){
+	//Initializer ,TO be added
+	
+	path.clear();
+	int x = startingx;
+	int y = startingy;
+	int index = y*width + x;
+	
+	vector<cell_key*> v ;
+	
+	int min_index = 0;
+	int min_weight = max_int;
+	int min_v=0;
+
+	while(!map->is_end(index)){
+		std::cout<<index<<endl;
+
+		discovered[index] = 1;
+		totalSum += map->weight(index);
+
+		min_weight = max_int;
+		path.push_back(index);
+			
+			if(y-1 >= 0 ){
+					if((!map->is_wall((y-1)*width+x )&& discovered[(y-1)*width+x]==0)){
+						push_back(v,(y-1)*width+x);
+				}	
+			}
+			if(y+1 <height){
+					if((!map->is_wall((y+1)*width+x )&& discovered[(y+1)*width+x]==0)){
+						push_back(v,(y+1)*width+x);
+					}	
+			}
+			if(x-1 >= 0 ){
+					if((!map->is_wall(y*width+x-1 )&& discovered[y*width+x-1]==0)){
+						push_back(v,y*width+x-1 );
+					}
+			}
+			if(x+1 <width){
+					if((!map->is_wall(y*width+x+1 )&& discovered[y*width+x+1]==0)){
+						push_back(v,y*width+x+1 );
+					}
+			}
+		
+		cout<<v.size()<<endl;
+		for(int i = 0; i<v.size(); i++){
+			if((v.at(i))->weight < min_weight){
+				min_index = v.at(i)->index;
+				min_weight = v.at(i)->weight;
+				min_v = i;
+			}
+		}
+		index = v.at(min_v)->index;
+		y = index/width;
+		x =index%width;
+
+		delete v.at(min_v);
+		v.erase(v.begin() + min_v);
+	}
+	return totalSum;
+}
 int navigator::DFS(){
 	path.clear();
 	totalSum = 0;

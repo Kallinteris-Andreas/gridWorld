@@ -1,6 +1,7 @@
 CC = g++
 BASICFLAGS= 
 
+
 FLAGS= -Wall $(BASICFLAGS)
 
 OPTFLAG= 
