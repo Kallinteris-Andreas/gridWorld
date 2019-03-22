@@ -9,7 +9,6 @@ navigator::navigator(grid *mapp){
 	found = false;
 	path.clear();
 
-	//Initializing the 2d adrray
 	discovered =(int*)calloc(height*width,sizeof(int));
 }
 
@@ -28,9 +27,12 @@ float navigator::distance(int index){ //THIS is the heuristic function,we may ch
 	return sqrt(xx*xx+yy*yy);
 }
 int navigator::A_star(){
-	//Initializer ,TO be added
-	
+	//Initializer 
+	totalSum = 0;
+	delete discovered;
+	discovered =(int*)calloc(height*width,sizeof(int));
 	path.clear();
+
 	int x = startingx;
 	int y = startingy;
 	int index = y*width + x;
