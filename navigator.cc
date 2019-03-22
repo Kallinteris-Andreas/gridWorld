@@ -24,7 +24,7 @@ void navigator::push_back(vector<cell_key*> &v,int index){
 float navigator::distance(int index){ //THIS is the heuristic function,we may change it
 	int xx = map->get_end()%width - index%width;
 	int yy = map->get_end()/width - index/width;
-	cout<<"weight : "<< sqrt(xx*xx+yy*yy) <<endl;
+	//cout<<"weight : "<< sqrt(xx*xx+yy*yy) <<endl;
 	return sqrt(xx*xx+yy*yy);
 }
 int navigator::A_star(){
@@ -38,11 +38,11 @@ int navigator::A_star(){
 	vector<cell_key*> v ;
 	
 	int min_index = 0;
-	int min_weight = max_int;
+	float min_weight = max_int;
 	int min_v=0;
 
 	while(!map->is_end(index)){
-		std::cout<<index<<endl;
+		//cout << y <<" "<<x<<" "<<index<<"\n";
 
 		discovered[index] = 1;
 		totalSum += map->weight(index);
@@ -70,9 +70,9 @@ int navigator::A_star(){
 						push_back(v,y*width+x+1 );
 					}
 			}
-		
-		cout<<v.size()<<endl;
+		min_weight = max_int;
 		for(int i = 0; i<v.size(); i++){
+			//cout<<"Index: "<<v.at(i)->index/width<<" : "<<v.at(i)->index%width<<" , weight: "<<v.at(i)->weight<<endl;
 			if((v.at(i))->weight < min_weight){
 				min_index = v.at(i)->index;
 				min_weight = v.at(i)->weight;

@@ -17,7 +17,7 @@ int main(int argc, char** argv){
 	grid* map = new grid("easy");
 	map->print();
 	navigator* nav = new navigator(map);
-	cout << nav->A_star()<<endl;
+	cout <<"A* cost is : "<< nav->A_star()<<endl;
 	//cout << nav->BFS()<<endl;
 	//cout << nav->DFS()<<endl;
 	vector<int> v = nav->get_path();
