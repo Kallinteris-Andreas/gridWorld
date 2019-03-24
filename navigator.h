@@ -36,7 +36,10 @@ class navigator{
 
 		bool is_edge(int);
 		bool is_edge(int, int);
-		void push_back(vector<cell_key*> &v,int index);//Push cell with index to the given vector
+		//Push cell with index to the given vector
+		void push_back(vector<cell_key*> &v,int index,int cost);
+		//Checks if index exists in vector<cell_key> v
+		bool exists(vector<cell_key*> &v,int index);
 		float distance(int); // Returns the distance from the end to the index
 	public:
 		navigator(grid* map);

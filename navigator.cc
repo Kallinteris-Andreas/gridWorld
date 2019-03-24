@@ -12,11 +12,11 @@ navigator::navigator(grid *mapp){
 	discovered =(int*)calloc(height*width,sizeof(int));
 }
 
-void navigator::push_back(vector<cell_key*> &v,int index){
+void navigator::push_back(vector<cell_key*> &v,int index,int cost){
 	float dist = distance(index);
 	cell_key* c = new cell_key();
 	c->index = index;
-	c->weight = dist + map->weight(index);
+	c->weight = dist + cost;
 
 	v.push_back(c);
 }
@@ -24,7 +24,21 @@ float navigator::distance(int index){ //THIS is the heuristic function,we may ch
 	int xx = map->get_end()%width - index%width;
 	int yy = map->get_end()/width - index/width;
 	//cout<<"weight : "<< sqrt(xx*xx+yy*yy) <<endl;
-	return sqrt(xx*xx+yy*yy);
+	return 2*sqrt(xx*xx+yy*yy);
+}
+bool navigator::exists(vector<cell_key*> &v,int index_){
+	/*for(auto i=v.begin();i!=v.end();i++){
+		if((cell_key*)i->index == index_){
+			return true;
+		}
+	}*/
+
+	for(int i = 0;i<v.size();i++){
+		if(v.at(i)->index == index_){
+			return true;
+		}
+	}
+	return false;
 }
 int navigator::A_star(){
 	//Initializer 
@@ -36,45 +50,71 @@ int navigator::A_star(){
 	int x = startingx;
 	int y = startingy;
 	int index = y*width + x;
+
+	int* discovered_from_index =(int*)calloc(height*width,sizeof(int));;
+	discovered_from_index[index]= index;
 	
 	vector<cell_key*> v ;
 	
 	int min_index = 0;
 	float min_weight = max_int;
 	int min_v=0;
+	int cost = 0;
+	int dir = 0;
 
 	while(!map->is_end(index)){
-		//cout << y <<" "<<x<<" "<<index<<"\n";
+		cout << y <<" "<<x<<" "<<index<<"\n";
 
-		discovered[index] = 1;
+		//discovered[index] = discovered[discovered_from_index[index]]+ map->weight(index);;
 		totalSum += map->weight(index);
 
-		min_weight = max_int;
+		
 		path.push_back(index);
 			
 			if(y-1 >= 0 ){
-					if((!map->is_wall((y-1)*width+x )&& discovered[(y-1)*width+x]==0)){
-						push_back(v,(y-1)*width+x);
+				dir = (y-1)*width+x ;
+				if(!map->is_wall(dir) && !exists(v,dir)){//&& discovered[(y-1)*width+x]==0)){
+					discovered_from_index[dir] = index;
+					cost = discovered[index] + map->weight(dir);
+					discovered[dir] = cost;
+
+					push_back(v,dir,cost);
 				}	
 			}
 			if(y+1 <height){
-					if((!map->is_wall((y+1)*width+x )&& discovered[(y+1)*width+x]==0)){
-						push_back(v,(y+1)*width+x);
-					}	
+				dir = (y+1)*width+x ;
+				if((!map->is_wall(dir))&& !exists(v,dir)){//&& discovered[(y+1)*width+x]==0)){
+					cost = discovered[index] + map->weight(dir);
+					/*if (discovered[dir]>cost || discovered[dir] == 0){
+						discovered[dir] = cost;
+					}else{
+						cost = discovered[dir];
+					}*/
+					discovered[dir] = cost;
+					push_back(v,dir,cost);
+				}	
 			}
 			if(x-1 >= 0 ){
-					if((!map->is_wall(y*width+x-1 )&& discovered[y*width+x-1]==0)){
-						push_back(v,y*width+x-1 );
-					}
+				dir = y*width+x-1;
+				if((!map->is_wall(dir ))&& !exists(v,dir)){//&& discovered[y*width+x-1]==0)){
+					cost = discovered[index] + map->weight(dir);
+					discovered[dir] = cost;
+
+					push_back(v,dir ,cost);
+				}
 			}
 			if(x+1 <width){
-					if((!map->is_wall(y*width+x+1 )&& discovered[y*width+x+1]==0)){
-						push_back(v,y*width+x+1 );
+				dir = y*width+x+1;
+					if((!map->is_wall(dir))&& !exists(v,dir)){//&& discovered[y*width+x+1]==0)){
+						cost = discovered[index] + map->weight(dir);
+						discovered[dir] = cost;
+
+						push_back(v,dir,cost);
 					}
 			}
 		min_weight = max_int;
 		for(int i = 0; i<v.size(); i++){
-			//cout<<"Index: "<<v.at(i)->index/width<<" : "<<v.at(i)->index%width<<" , weight: "<<v.at(i)->weight<<endl;
+			//cout<<"Index: "<<v.at(i)->index/width<<" : "<<v.at(i)->index%width<<" , weight: "<<v.at(i)->weight<<":discovered: "<<discovered[v.at(i)->index]<<endl;
 			if((v.at(i))->weight < min_weight){
 				min_index = v.at(i)->index;
 				min_weight = v.at(i)->weight;
@@ -88,6 +128,56 @@ int navigator::A_star(){
 		delete v.at(min_v);
 		v.erase(v.begin() + min_v);
 	}
+	//BELOW CODE PRINTS THE OPTIMAL PATH,USING BACKTRACKING
+	/*
+	index = map->get_end();
+	min_weight = max_int;
+	min_index = map->get_end();
+	while(index!=map->get_start()){
+		min_weight = max_int;
+		//min_index = -1;
+		cout<<index << endl;
+		if(y-1 >= 0 ){
+			dir = (y-1)*width+x ;
+			if(!map->is_wall(dir) && discovered[dir] != 0){
+				if(discovered[dir]<min_weight){
+					min_weight = discovered[dir];
+					min_index = dir;
+				}
+			}	
+		}
+		if(y+1 <height){
+			dir = (y+1)*width+x ;
+			if((!map->is_wall(dir) && discovered[dir] != 0)){
+				if(discovered[dir]<min_weight){
+					min_weight = discovered[dir];
+					min_index = dir;
+				}
+			}	
+		}
+		if(x-1 >= 0 ){
+			dir = y*width+x-1;
+			if((!map->is_wall(dir) && discovered[dir] != 0)){
+				if(discovered[dir]<min_weight){
+					min_weight = discovered[dir];
+					min_index = dir;
+				}
+			}
+		}
+		if(x+1 <width){
+			dir = y*width+x+1;
+			if((!map->is_wall(dir) && discovered[dir] != 0)){
+				if(discovered[dir]<min_weight){
+					min_weight = discovered[dir];
+					min_index = dir;
+				}
+			}
+		}
+		index = min_index;
+		y = index/width;
+		x = index%width;
+	}*/
+
 	return totalSum;
 }
 int navigator::DFS(){
