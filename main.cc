@@ -64,7 +64,7 @@ int main(int argc, char** argv){
 				v = nav->get_path();
 				std::cout << "path steps: " << v.size() << std::endl;
 			    for (std::vector<int>::const_iterator i = v.begin(); i != v.end(); ++i){
-			    	cout << " -> "<< *i ;
+			    	cout << " -> y: "<< (*i)/map->get_width() <<" x: "<< (*i)%map->get_width()<<endl;
 			    }
 				break;
 			case 7:
@@ -72,6 +72,11 @@ int main(int argc, char** argv){
 				break;
 			case 8:
 				cout <<"A* cost is : "<< nav->A_star()<<endl;
+				v = nav->get_path();
+				std::cout << "path steps: " << v.size() << std::endl;
+			    for (std::vector<int>::const_iterator i = v.begin(); i != v.end(); ++i){
+			    	cout << " -> y: "<< (*i)/map->get_width() <<" x: "<< (*i)%map->get_width()<<endl;
+			    }
 				break;
 			case 9:
 			cout<<"Not implemented yet"<<endl;
