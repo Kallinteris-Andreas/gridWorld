@@ -23,6 +23,13 @@ struct cell_key{
 	int index;
 	float weight;
 };
+enum direction{
+	left,
+	right,
+	up,
+	down,
+	none,
+};
 class navigator{
 	private:
 		int totalSum;
@@ -40,23 +47,20 @@ class navigator{
 		void push_back(vector<cell_key*> &v,int index,int cost);
 		//Checks if index exists in vector<cell_key> v
 		bool exists(vector<cell_key*> &v,int index);
-		float distance(int); // Returns the distance from the end to the index
+		// Returns the distance from the end to the index
+		float distance(int index); 
+		int LRTA_star_cost(int s,int s_,int* H);
 	public:
 		navigator(grid* map);
 		vector<int> get_path(){return path;};//Returns the path to the destination
 		int DFS();
 		int BFS();
 		int A_star();
-		int LRTA_star();//to be implemented
+		int LRTA_star();
 };
 
 
 
-enum direction{
-	left,
-	right,
-	above,
-	below,
-};
+
 
 #endif

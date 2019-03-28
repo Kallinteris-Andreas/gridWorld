@@ -24,7 +24,7 @@ float navigator::distance(int index){
 	int xx = map->get_end()%width - index%width;
 	int yy = map->get_end()/width - index/width;
 
-	return (abs(xx)+abs(yy)) ;//Manhattan Distance
+	return 1*(abs(xx)+abs(yy)) ;//Manhattan Distance
 	//return sqrt(xx*xx+yy*yy);
 }
 bool navigator::exists(vector<cell_key*> &v,int index_){
@@ -35,6 +35,212 @@ bool navigator::exists(vector<cell_key*> &v,int index_){
 	}
 	return false;
 }
+int navigator::LRTA_star_cost(int s,int s_,int* H){
+	if(H[s_] == 0){
+		return distance(s);
+	}else{
+		return H[s_] + map->weight(s_); //!!!!!!!!
+	}
+}
+int navigator::LRTA_star(){
+	delete discovered;
+	discovered =(int*)calloc(height*width,sizeof(int));
+	int* H =(int*)calloc(height*width,sizeof(int));
+	int* result_state = (int*)calloc(height*width,sizeof(int));
+	direction* result_action = (direction*)calloc(height*width,sizeof(direction));
+
+	int** result=(int**)malloc(height*width*sizeof(int*));
+	for(int i=0;i<height*width;i++){
+		result[i] = (int*)malloc(4*sizeof(int));
+	}
+
+	for(int i =0;i<width*height;i++){
+		for(int j=0;j<4;j++){
+			result[i][j] = -1;
+		}
+		
+	}
+
+	path.clear();
+	totalSum =0;
+
+	int x = startingx;
+	int y = startingy;
+	int index = y*width + x;
+
+	direction action,prevAction ;
+	
+	int prev_index = -1;
+	int min_index=-1;
+	int min_weight = max_int;
+	int dir = 0;
+	int w = 0;
+
+	while(!map->is_end(index)){
+		totalSum +=map->weight(index);
+		cout<<endl; 
+		cout <<"--> "<< y <<" "<<x<<" "<<index<<"\n";
+		
+		if(H[index] == 0){
+			H[index] = distance(index);
+		}
+		if(prev_index > -1){
+			result[prev_index][prevAction] = index;
+			
+			min_weight = max_int;
+			y = prev_index/width;
+			x = prev_index%width;
+
+			if(y-1 >= 0 ){
+				dir = (y-1)*width+x ;
+				if(!map->is_wall(dir) && result[prev_index][2]!=-1){
+					if(LRTA_star_cost(prev_index,dir,H) < min_weight ){
+						min_weight = LRTA_star_cost(prev_index,dir,H);
+						min_index = dir;
+					}
+				}	
+			}
+			if(y+1 <height){
+				dir = (y+1)*width+x ;
+				if(!map->is_wall(dir) && result[prev_index][3]!=-1){
+					if(LRTA_star_cost(prev_index,dir,H) < min_weight){
+						min_weight = LRTA_star_cost(prev_index,dir,H);
+						min_index = dir;
+					}
+				}	
+			}
+			if(x-1 >= 0 ){
+				dir = y*width+x-1;
+				if(!map->is_wall(dir)&& result[prev_index][0]!=-1){
+					if(LRTA_star_cost(prev_index,dir,H) < min_weight){
+						min_weight = LRTA_star_cost(prev_index,dir,H);
+						min_index = dir;
+					}
+				}
+			}
+			if(x+1 <width){
+				dir = y*width+x+1;
+				if(!map->is_wall(dir)&& result[prev_index][1]!=-1){
+					if(LRTA_star_cost(prev_index,dir,H) < min_weight){
+						min_weight = LRTA_star_cost(prev_index,dir,H);
+						min_index = dir;
+					}
+				}
+			}
+			H[prev_index] = min_weight;
+		}
+		y = index/width;
+		x = index%width;
+		min_weight =max_int;
+		min_index = -1;
+
+		if(y-1 >= 0 ){
+			dir = (y-1)*width+x ;
+			if(!map->is_wall(dir)){
+				w = LRTA_star_cost(index,dir,H);
+				if(w==min_weight){
+					if(distance(dir)<=distance(min_index)){
+						min_index = dir;
+					}
+				}else if(w < min_weight){
+					min_weight = w ;
+					min_index = dir;
+					action = direction::up;
+				}cout<<LRTA_star_cost(index,dir,H)<<" ,y:"<<dir/width<<" ,x:"<<dir%width<<endl;
+			}	
+		}
+		if(y+1 <height){
+			dir = (y+1)*width+x ;
+			if(!map->is_wall(dir)){
+				w = LRTA_star_cost(index,dir,H);
+				if(w==min_weight){
+					if(distance(dir)<=distance(min_index)){
+						min_index = dir;
+					}
+				}else if(w < min_weight){
+					min_weight = w ;
+					min_index = dir;
+					action = direction::up;
+				}cout<<LRTA_star_cost(index,dir,H)<<" ,y:"<<dir/width<<" ,x:"<<dir%width<<endl;
+			}	
+		}
+		if(x-1 >= 0 ){
+			dir = y*width+x-1;
+			if(!map->is_wall(dir)){
+				w = LRTA_star_cost(index,dir,H);
+				if(w==min_weight){
+					if(distance(dir)<=distance(min_index)){
+						min_index = dir;
+					}
+				}else if(w < min_weight){
+					min_weight = w ;
+					min_index = dir;
+					action = direction::up;
+				}cout<<LRTA_star_cost(index,dir,H)<<" ,y:"<<dir/width<<" ,x:"<<dir%width<<endl;
+			}
+		}
+		if(x+1 <width){
+			dir = y*width+x+1;
+			if(!map->is_wall(dir)){
+				w = LRTA_star_cost(index,dir,H);
+				if(w==min_weight){
+					if(distance(dir)<=distance(min_index)){
+						min_index = dir;
+					}
+				}else if(w < min_weight){
+					min_weight = w ;
+					min_index = dir;
+					action = direction::up;
+				}cout<<LRTA_star_cost(index,dir,H)<<" ,y:"<<dir/width<<" ,x:"<<dir%width<<endl;
+			}
+		}
+		/*cout<<min_weight<<" "<<min_index<<endl;
+		if(totalSum == 5){
+			return 5;
+		}*/
+		if(min_index == -1){
+			//Maybe set node as dead end and delete
+		}
+
+		prevAction = action;
+		prev_index = index;
+		index = min_index;
+		y = index/width;
+		x = index%width;		
+
+		path.insert(path.begin(),(min_index));
+
+	
+	}
+	
+	//Debbuging code for  table
+	cout<<endl;/*
+	for(int i=0;i<width*height;i++){
+		for(int y=0;y<4;y++){
+			if (result[i][y]==-1){
+				std::printf("  -");
+			}else{
+				std::printf("%3d",result[i][y]);
+			}
+
+		}
+		cout<<endl;
+	}*/
+	cout<<endl;
+	for(int i=0;i<height;i++){
+		for(int y=0;y<width;y++){
+	
+				std::printf("%4d",H[i*width+y]);
+			
+
+		}
+		cout<<endl;
+	}
+	cout<<endl;
+	
+	return totalSum;
+}
+
 int navigator::A_star(){
 	//Initializer 
 	delete discovered;
@@ -44,9 +250,6 @@ int navigator::A_star(){
 	int x = startingx;
 	int y = startingy;
 	int index = y*width + x;
-
-	int* discovered_from_index =(int*)calloc(height*width,sizeof(int));
-	discovered_from_index[index]= index;
 	
 	vector<cell_key*> v ;
 	
@@ -69,8 +272,6 @@ int navigator::A_star(){
 				}else if(cost < discovered[dir]){
 					discovered[dir] = cost;
 				}
-				
-				discovered_from_index[dir] = index;
 				push_back(v,dir,cost);
 			}	
 		}
@@ -83,7 +284,6 @@ int navigator::A_star(){
 				}else if(cost < discovered[dir]){
 					discovered[dir] = cost;
 				}
-				discovered_from_index[dir] = index;
 				push_back(v,dir,cost);
 			}	
 		}
@@ -96,7 +296,6 @@ int navigator::A_star(){
 				}else if(cost < discovered[dir]){
 					discovered[dir] = cost;
 				}
-				discovered_from_index[dir] = index;
 				push_back(v,dir ,cost);
 			}
 		}
@@ -109,7 +308,6 @@ int navigator::A_star(){
 				}else if(cost < discovered[dir]){
 					discovered[dir] = cost;
 				}
-				discovered_from_index[dir] = index;
 				push_back(v,dir,cost);
 			}
 		}
@@ -141,7 +339,7 @@ int navigator::A_star(){
 		cout<<endl;
 	}*/
 
-	//BELOW CODE PRINTS THE OPTIMAL PATH,USING BACKTRACKING
+	//BELOW CODE PRINTS THE OPTIMAL PATH,USING BACKTRACKING of discovered table
 	
 	index = map->get_end();
 	min_weight = max_int;
