@@ -4,5 +4,7 @@
 * add gitingore [Done]
 
 # 0.2
-* implement BFS
-* implement DFS
+* implement BFS[Done]
+* implement DFS[Done]
+* implement A* [Done]
+* implement LRTA*[pending]
