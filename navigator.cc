@@ -16,7 +16,7 @@ void navigator::push_back(vector<cell_key*> &v,int index,int cost){
 	float dist = distance(index);
 	cell_key* c = new cell_key();
 	c->index = index;
-	c->weight = dist + cost;
+	c->weight = (dist + cost);
 
 	v.push_back(c);
 }
@@ -43,12 +43,10 @@ int navigator::LRTA_star_cost(int s,int s_,int* H){
 	}
 }
 int navigator::LRTA_star(){
-	delete discovered;
+	free(discovered);
 	discovered =(int*)calloc(height*width,sizeof(int));
 	int* H =(int*)calloc(height*width,sizeof(int));
-	int* result_state = (int*)calloc(height*width,sizeof(int));
-	direction* result_action = (direction*)calloc(height*width,sizeof(direction));
-
+	//Initializing member variables
 	int** result=(int**)malloc(height*width*sizeof(int*));
 	for(int i=0;i<height*width;i++){
 		result[i] = (int*)malloc(4*sizeof(int));
@@ -78,8 +76,7 @@ int navigator::LRTA_star(){
 
 	while(!map->is_end(index)){
 		totalSum +=map->weight(index);
-		cout<<endl; 
-		cout <<"--> "<< y <<" "<<x<<" "<<index<<"\n";
+		//cout <<"--> "<< y <<" "<<x<<" "<<index<<"\n";
 		
 		if(H[index] == 0){
 			H[index] = distance(index);
@@ -133,12 +130,13 @@ int navigator::LRTA_star(){
 		x = index%width;
 		min_weight =max_int;
 		min_index = -1;
-
+		//Minimize the cost of the next move
 		if(y-1 >= 0 ){
 			dir = (y-1)*width+x ;
 			if(!map->is_wall(dir)){
 				w = LRTA_star_cost(index,dir,H);
-				if(w==min_weight){
+				if(w==min_weight){//if you find more than one good path,
+								 //pick the closest to the finsih
 					if(distance(dir)<=distance(min_index)){
 						min_index = dir;
 					}
@@ -146,7 +144,7 @@ int navigator::LRTA_star(){
 					min_weight = w ;
 					min_index = dir;
 					action = direction::up;
-				}cout<<LRTA_star_cost(index,dir,H)<<" ,y:"<<dir/width<<" ,x:"<<dir%width<<endl;
+				}//cout<<LRTA_star_cost(index,dir,H)<<" ,y:"<<dir/width<<" ,x:"<<dir%width<<endl;
 			}	
 		}
 		if(y+1 <height){
@@ -160,8 +158,8 @@ int navigator::LRTA_star(){
 				}else if(w < min_weight){
 					min_weight = w ;
 					min_index = dir;
-					action = direction::up;
-				}cout<<LRTA_star_cost(index,dir,H)<<" ,y:"<<dir/width<<" ,x:"<<dir%width<<endl;
+					action = direction::down;
+				}
 			}	
 		}
 		if(x-1 >= 0 ){
@@ -175,8 +173,8 @@ int navigator::LRTA_star(){
 				}else if(w < min_weight){
 					min_weight = w ;
 					min_index = dir;
-					action = direction::up;
-				}cout<<LRTA_star_cost(index,dir,H)<<" ,y:"<<dir/width<<" ,x:"<<dir%width<<endl;
+					action = direction::left;
+				}
 			}
 		}
 		if(x+1 <width){
@@ -190,16 +188,9 @@ int navigator::LRTA_star(){
 				}else if(w < min_weight){
 					min_weight = w ;
 					min_index = dir;
-					action = direction::up;
-				}cout<<LRTA_star_cost(index,dir,H)<<" ,y:"<<dir/width<<" ,x:"<<dir%width<<endl;
+					action = direction::right;
+				}
 			}
-		}
-		/*cout<<min_weight<<" "<<min_index<<endl;
-		if(totalSum == 5){
-			return 5;
-		}*/
-		if(min_index == -1){
-			//Maybe set node as dead end and delete
 		}
 
 		prevAction = action;
@@ -212,10 +203,11 @@ int navigator::LRTA_star(){
 
 	
 	}
-	
+	/*
 	//Debbuging code for  table
-	cout<<endl;/*
+	cout<<endl;
 	for(int i=0;i<width*height;i++){
+		cout<<i<<". ";
 		for(int y=0;y<4;y++){
 			if (result[i][y]==-1){
 				std::printf("  -");
@@ -225,25 +217,31 @@ int navigator::LRTA_star(){
 
 		}
 		cout<<endl;
-	}*/
+	}
 	cout<<endl;
 	for(int i=0;i<height;i++){
 		for(int y=0;y<width;y++){
-	
-				std::printf("%4d",H[i*width+y]);
-			
-
+				if(H[i*width+y] == max_int){
+					std::printf("   -");
+				}else{
+					std::printf("%4d",H[i*width+y]);
+				}
 		}
 		cout<<endl;
-	}
-	cout<<endl;
+	}*/
 	
+	free(H);
+	for(int i=0;i<height*width;i++){
+		free(result[i]);
+	}
+	//free(result);
+
 	return totalSum;
 }
 
 int navigator::A_star(){
 	//Initializer 
-	delete discovered;
+	free(discovered);
 	discovered =(int*)calloc(height*width,sizeof(int));
 	path.clear();
 
@@ -326,18 +324,18 @@ int navigator::A_star(){
 		y = index/width;
 		x =index%width;
 
-		delete v.at(min_v);
+		free(v.at(min_v));
 		v.erase(v.begin() + min_v);
 	}
 	discovered[map->get_start()] = -1;
-/*//Debbuging code for discovered table
+//Debbuging code for discovered table
 	for(int i=0;i<height;i++){
 		for(int y=0;y<width;y++){
 			//cout<<discovered[i*width+y]<<" ";
 			std::printf("%4d",discovered[i*width+y]);
 		}
 		cout<<endl;
-	}*/
+	}
 
 	//BELOW CODE PRINTS THE OPTIMAL PATH,USING BACKTRACKING of discovered table
 	
@@ -396,7 +394,7 @@ int navigator::DFS(){
 	totalSum = 0;
 	found = false;
 	if(discovered!= NULL){
-	 	delete discovered;	
+	 	free(discovered);	
 	}
 	discovered = (int*)calloc(height*width,sizeof(int));
 
