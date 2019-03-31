@@ -37,7 +37,7 @@ class navigator{
 		int* discovered;
 		vector<int> path;
 		
-		bool found ;
+		bool found;
 
 		int DFS(int x,int y);
 
@@ -58,9 +58,5 @@ class navigator{
 		int A_star();
 		int LRTA_star();
 };
-
-
-
-
 
 #endif

@@ -44,14 +44,13 @@ int main(int argc, char** argv){
 			case 1:
 				free(map);
 				map = new grid("default");
-				free(nav);
+				//delete nav;
 				nav = new navigator(map);
 				break;
 			case 2:
-			cout<<"1";
 				free(map);
-				map = new grid("easy");cout<<"2";
-				free(nav);cout<<"3";
+				map = new grid("easy");
+				free(nav);
 				nav = new navigator(map);
 				break;
 			case 3:
@@ -81,7 +80,10 @@ int main(int argc, char** argv){
 			    }
 				break;
 			case 7:
-				cout << nav->BFS()<<endl;
+				if (nav->BFS())
+					std::cout << "found with BFS search" << std::endl;
+				else
+					std::cout << "not found with BFS search" << std::endl;
 				break;
 			case 8:
 				cout <<"A* cost is : "<< nav->A_star()<<endl;

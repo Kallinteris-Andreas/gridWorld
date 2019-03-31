@@ -394,7 +394,7 @@ int navigator::DFS(){
 	totalSum = 0;
 	found = false;
 	if(discovered!= NULL){
-	 	free(discovered);	
+	 	free(discovered);
 	}
 	discovered = (int*)calloc(height*width,sizeof(int));
 
@@ -464,10 +464,13 @@ int navigator::DFS(int x,int y){
 
 int navigator::BFS(){
 	//init an array with no dynamic resizing
-	const int capacity = 2*std::min(std::max(startingx, width-startingx),
+	const int capacity = 4*std::min(std::max(startingx, width-startingx),
 				std::max(startingy, height - startingy));
-	std::queue<int, boost::circular_buffer<int>> mq{boost::circular_buffer<int>(capacity)};
-	bool *visited = new bool[height*width];
+	//std::queue<int, boost::circular_buffer<int>> mq{boost::circular_buffer<int>(capacity)};
+	std::queue<int> mq;
+	//bool *visited = new bool[height*width];
+	bool *visited = (bool*)calloc(sizeof(bool),width*height);
+	assert(map->get_start() < width*height);
 	visited[map->get_start()] = true;
 	mq.push(map->get_start());
 
@@ -475,29 +478,38 @@ int navigator::BFS(){
 		int cur = mq.front();
 		mq.pop();
 		std::cout << cur << "->";
-		if (map->is_end(cur))
+		if (map->is_end(cur)){
+			//delete visited;
 			return 1;
+		}
 		//left
 		if (cur%width-1 >= 0 && visited[cur-1] == false){
+			assert(mq.size() != capacity);
 			mq.push(cur-1);
 			visited[cur-1] = true;
 		}
 		//right
 		if (cur%width+1 <= width && visited[cur+1] == false){
+			assert(mq.size() != capacity);
 			mq.push(cur+1);
 			visited[cur+1] = true;
 		}
 		//up
 		if (cur/width-1 >= 0 && visited[cur-height] == false){
+			assert(mq.size() != capacity);
 			mq.push(cur-height);
 			visited[cur-height] = true;
 		}
 		//down
 		if (cur/width+1 <= height && visited[cur+height] == false){
+			assert(mq.size() != capacity);
 			mq.push(cur+height);
 			visited[cur+height] = true;
 		}
+		/*
+		*/
 	}
+	//delete visited;
 	return 0;
 }
 
