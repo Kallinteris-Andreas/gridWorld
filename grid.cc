@@ -56,14 +56,20 @@ grid::grid(std::string grid_name){
 	}
 }
 
-/*
 //generate random grid
 grid::grid(int h0, int w0){
 	height = h0;
 	weight = w0;
 	grid_world = (char*) calloc(sizeof(char),(height)*
 			(width/CELLS_PER_BYTE + (width%CELLS_PER_BYTE!=0)));
+	grass_cost = 2;
+
+	start = rand() %(height*width);
+	end = rand() %(height*width);
+	while (end == start)
+		end = rand() %(height*width);
 }
+/*
 */
 
 
