@@ -39,7 +39,7 @@ int main(int argc, char** argv){
 		cout<<"--------------------------------\n"<<endl;
 		
 		cin>>pick;
-		
+
 		switch(pick){
 			case 1:
 				free(map);
@@ -80,10 +80,14 @@ int main(int argc, char** argv){
 			    }
 				break;
 			case 7:
+<<<<<<< HEAD
 				if (nav->BFS())
 					std::cout << "found with BFS search" << std::endl;
 				else
 					std::cout << "not found with BFS search" << std::endl;
+=======
+				nav->BFS();
+>>>>>>> 23a968be171803c98ac5a49bc21573d23736847c
 				break;
 			case 8:
 				cout <<"A* cost is : "<< nav->A_star()<<endl;
