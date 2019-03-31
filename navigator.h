@@ -45,8 +45,8 @@ class navigator{
 		bool is_edge(int, int);
 		//Push cell with index to the given vector
 		void push_back(vector<cell_key*> &v,int index,int cost);
-		//Checks if index exists in vector<cell_key> v
-		bool exists(vector<cell_key*> &v,int index);
+		//Checks if index exists in vector<cell_key> v,and returns the index
+		int exists(vector<cell_key*> &v,int index);
 		// Returns the distance from the end to the index
 		float distance(int index); 
 		int LRTA_star_cost(int s,int s_,int* H);

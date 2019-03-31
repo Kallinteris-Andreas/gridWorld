@@ -39,7 +39,7 @@ int main(int argc, char** argv){
 		cout<<"--------------------------------\n"<<endl;
 		
 		cin>>pick;
-		
+
 		switch(pick){
 			case 1:
 				free(map);
@@ -81,7 +81,7 @@ int main(int argc, char** argv){
 			    }
 				break;
 			case 7:
-				cout << nav->BFS()<<endl;
+				nav->BFS();
 				break;
 			case 8:
 				cout <<"A* cost is : "<< nav->A_star()<<endl;
