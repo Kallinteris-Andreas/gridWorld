@@ -55,7 +55,7 @@ grid::grid(std::string grid_name){
 		grass_file.close();
 	}
 }
-
+/*
 //generate random grid
 grid::grid(int h0, int w0){
 	height = h0;
@@ -69,7 +69,7 @@ grid::grid(int h0, int w0){
 	while (end == start)
 		end = rand() %(height*width);
 }
-/*
+
 */
 
 
@@ -96,12 +96,12 @@ int grid::weight(int index_h, int index_w){
 }
 
 void grid::print(){
-	std::cout << "Height:" << height << std::endl;
-	std::cout << "Width" << width << std::endl;
+	std::cout << "Height: " << height << std::endl;
+	std::cout << "Width: " << width << std::endl;
 	for (int i = 0; i!= height; i++){
 		for (int j = 0; j!= width; j++){
-			std::cout << get_cell(i*width + j);
-			std::cout << symbol((cell) get_cell(i*width + j));
+			//std::cout << get_cell(i*width + j);
+			std::cout << symbol((cell) get_cell(i*width + j))<<"  ";
 		}
 		std::cout << std::endl;
 	}
